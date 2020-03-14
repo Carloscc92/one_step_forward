@@ -1,0 +1,31 @@
+# 1 - Prepare the imports
+
+import pandas_datareader as dr
+from pandas_datareader import data, wb
+import pandas as pd
+import numpy as np
+import datetime
+%matplotlib inline
+
+# 2 - Select a dates range
+
+start = datetime.datetime(2006, 1, 1)
+end = datetime.datetime(2016, 1, 1)
+
+# 3 - Create variables and retrieve the date from Yahoo
+
+Bank_of_america = dr.data.get_data_yahoo('BAC', start, end)
+Citigroup = dr.data.get_data_yahoo('C', start, end)
+Goldman_sach = dr.data.get_data_yahoo('GS', start, end)
+JPMorgan = dr.data.get_data_yahoo('JPM', start, end)
+Morgan_standley = dr.data.get_data_yahoo('MS', start, end)
+Wells_fargo = dr.data.get_data_yahoo('WFC', start, end)
+
+# 4 - Show the head of stock data
+
+Bank_of_america.head()
+Citigroup.head()
+Goldman_sach.head()
+JPMorgan.head()
+Morgan_standley.head()
+Wells_fargo.head()
