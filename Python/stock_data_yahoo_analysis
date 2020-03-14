@@ -1,0 +1,66 @@
+# 1 - Prepare the imports
+
+import pandas_datareader as dr
+from pandas_datareader import data, wb
+import pandas as pd
+import numpy as np
+import datetime
+import seaborn as sns
+%matplotlib inline
+
+# 2 - Select a dates range (from 1st Jan 2010 to 1st Jan 2020)
+
+start = datetime.datetime(2010, 1, 1)
+end = datetime.datetime(2020, 1, 1)
+
+# 3 - Create variables and retrieve the date from Yahoo
+
+#Bank of America
+BAC = dr.data.get_data_yahoo('BAC', start, end)
+#Citigroup
+C = dr.data.get_data_yahoo('C', start, end)
+#Goldman Sach
+GS = dr.data.get_data_yahoo('GS', start, end)
+#JP Morgan Chase
+JPM = dr.data.get_data_yahoo('JPM', start, end)
+#Morgan Standley
+MS = dr.data.get_data_yahoo('MS', start, end)
+#Wells Fargo & Co
+WFC = dr.data.get_data_yahoo('WFC', start, end)
+
+# 4 - Show the head of stock data
+
+BAC.head()
+C.head()
+GS.head()
+JPM.head()
+MS.head()
+WFC.head()
+
+# 5 - Gather all the dataframes into one
+
+tickers = ['BAC', 'C', 'GS', 'JPM', 'MS', 'WFC']
+bank_stocks = pd.concat([BAC, C, GS, JPM, MS, WFC], axis=1, keys=tickers)
+bank_stocks.head()
+
+# 6 - Add columns to be able to multi-index them
+
+bank_stocks.columns.names = ['Bank Ticker','Stock Info']
+bank_stocks.head()
+
+# 7 - Get the turnovers based on the close price
+
+returns = pd.DataFrame()
+for tick in tickers:
+    returns[tick + 'Return'] = bank_stocks[tick]['Close'].pct_change()
+returns.head()
+
+# 8 - Retrieve the worst and the best single day return
+
+returns.idxmin()
+returns.idxmax()
+
+# 9 - Get the bank`s risk for the period and for 2019
+
+returns.std()
+returns.loc['2019-01-01':'2019-12-31'].std()
